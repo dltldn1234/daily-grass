@@ -1,0 +1,27 @@
+name: Daily check-in
+
+on:
+  schedule:
+    - cron: '37 12 * * *'
+      timezone: 'Asia/Seoul'
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  check-in:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: daily-checkin-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - name: Check out default branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - name: Record and push today's check-in
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+        run: ./scripts/checkin.sh
