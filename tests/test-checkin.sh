@@ -20,7 +20,7 @@ pass() {
 }
 
 run_checkin() {
-  ./scripts/checkin.sh "$@"
+  CHECKIN_TEST_MODE=1 ./scripts/checkin.sh "$@"
 }
 
 # First attendance creates the monthly file and a single commit.
@@ -51,6 +51,12 @@ run_checkin 2027-01-01 >/dev/null
 [[ -f activity/2027-01.md ]]
 grep -Fqx '# January 2027' activity/2027-01.md
 pass 'year change creates a correctly named file'
+
+# Date injection is restricted to the isolated test harness.
+if ./scripts/checkin.sh 2026-10-20 >/dev/null 2>&1; then
+  printf 'not ok - production date override was accepted\n' >&2; exit 1
+fi
+pass 'date override is unavailable outside test mode'
 
 # Invalid formats and impossible calendar dates must fail.
 if run_checkin 2026-2-01 >/dev/null 2>&1; then

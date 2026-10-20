@@ -19,6 +19,7 @@ if (($# > 1)); then
 fi
 
 if (($# == 1)); then
+  [[ ${CHECKIN_TEST_MODE:-0} == 1 ]] || fail "date override is available only to the isolated test suite"
   checkin_date=$1
   [[ $checkin_date =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || fail "date must use YYYY-MM-DD"
   if date -u -d "$checkin_date" +%F >/dev/null 2>&1; then
@@ -74,13 +75,7 @@ if git diff --cached --quiet -- "$relative_file"; then
 fi
 
 git config user.name "${GIT_AUTHOR_NAME:-dltldn1234}"
-if [[ -n ${GIT_AUTHOR_EMAIL:-} ]]; then
-  git config user.email "$GIT_AUTHOR_EMAIL"
-elif [[ -n ${GITHUB_ACTOR:-} ]]; then
-  git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
-else
-  git config user.email "dltldn1234@users.noreply.github.com"
-fi
+git config user.email "${GIT_AUTHOR_EMAIL:-266720604+dltldn1234@users.noreply.github.com}"
 
 git commit -m "chore: daily check-in $checkin_date" -- "$relative_file"
 

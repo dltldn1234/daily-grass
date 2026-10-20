@@ -21,5 +21,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Record and push today's check-in
         env:
-          GITHUB_ACTOR: ${{ github.actor }}
+          GIT_AUTHOR_NAME: dltldn1234
+          GIT_AUTHOR_EMAIL: 266720604+dltldn1234@users.noreply.github.com
         run: ./scripts/checkin.sh
