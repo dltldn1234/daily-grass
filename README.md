@@ -40,7 +40,7 @@ Tests create a temporary Git repository and never push to GitHub or modify the p
 
 1. Push the project to `main` and make `main` the repository's default branch.
 2. In **Settings → Actions → General → Workflow permissions**, allow workflows to write to the repository if the organization or repository policy otherwise makes `GITHUB_TOKEN` read-only. The workflow requests only `contents: write` for the check-in job; the test workflow has `contents: read`.
-3. Confirm Actions are enabled. Use **Actions → Daily check-in → Run workflow** for a manual run. Manual runs use the current Korean date too, so they will not make a second same-day commit.
+3. Confirm Actions are enabled. Use **Actions → Daily check-in → Run workflow** on `main` for a manual run. Runs selected from other branches are skipped. Manual runs use the current Korean date too, so they will not make a second same-day commit.
 4. Inspect the workflow run and the `activity` file on `main` to confirm the result.
 
 No personal access token or separately stored secret is needed. The workflow uses GitHub's built-in `GITHUB_TOKEN`.

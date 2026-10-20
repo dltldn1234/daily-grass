@@ -10,6 +10,7 @@ permissions: {}
 
 jobs:
   check-in:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -18,7 +19,7 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Check out default branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
       - name: Record and push today's check-in
         env:
           GIT_AUTHOR_NAME: dltldn1234
